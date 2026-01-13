@@ -1,23 +1,7 @@
-import os
-from dotenv import load_dotenv
-import requests
+import data_fetcher
 
-load_dotenv()
 
-API_KEY = os.getenv("API_KEY")
 HTML_TEMPLATE = "animals_template.html"
-REQUEST_URL = "https://api.api-ninjas.com/v1/animals?name="
-
-def api_request(animal_name):
-    """ API-Request for a given animal, returns a json-object """
-    url = f"{REQUEST_URL}{animal_name}"
-    res = requests.get(url, headers={"X-Api-Key": API_KEY})
-    if res.status_code == requests.codes.ok:
-        print("Success:", res.status_code)
-        return res.json()
-    else:
-        print("Error:", res.status_code, res.text)
-        return None
 
 
 def get_html():
@@ -59,7 +43,7 @@ def serialize_animal(animal):
 
 def get_string(animal_name):
     """ Returns the animal-data as a string """
-    animals_data = api_request(animal_name)
+    animals_data = data_fetcher.fetch_data(animal_name)
     print(f"Number of animals: {len(animals_data)}")
     if animals_data == None:
         return None
